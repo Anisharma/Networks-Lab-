@@ -1,0 +1,92 @@
+
+OUTPUT of "ifconfig -a" command 
+eno1      Link encap:Ethernet  HWaddr b0:5a:da:d7:a4:8a  
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:983 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:983 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1 
+          RX bytes:62445 (62.4 KB)  TX bytes:62445 (62.4 KB)
+
+wlo1      Link encap:Ethernet  HWaddr 48:e2:44:01:63:a7  
+          inet addr:192.168.1.101  Bcast:192.168.1.255  Mask:255.255.255.0
+          inet6 addr: fe80::3d20:19dd:66b3:cd91/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:24119 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:8963 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:31087950 (31.0 MB)  TX bytes:1280200 (1.2 MB)
+
+OUTPUT of "route" command 
+
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+default         192.168.1.1     0.0.0.0         UG    600    0        0 wlo1
+link-local      *               255.255.0.0     U     1000   0        0 wlo1
+192.168.1.0     *               255.255.255.0   U     600    0        0 wlo1
+
+
+Ans 4 : 
+
+		:: "ifconfig" COMMAND ::
+		-a : will also show interfaces that are down 
+		1. ifconfig without any option shows network interfaces that are up and running in computer . 
+
+		2. eno1 : first ethernet interface 
+		   lo   : loop back interface 
+		   wlo1 : first wireless network interface in system 
+
+
+		3. lo represent loop back interface :The loopback interface does not represent any actual hardware, but exists so applications running on your computer can always connect to servers on the same machine.
+		it is  helpful when a server offering a resource you need is running on your own machine.
+		For IPv4, the loopback interface is assigned all the IPs in the 127.0.0.0/8 address block. That is, 127.0.0.1 through 127.255.255.254 all represent your computer. For most purposes, though, it is only necessary to use one IP address, and that is 127.0.0.1
+
+		4. Link encap:Ethernet --> denotes that device is ehternet related interface 
+		   Link encap:Local Loopback --> denotes loopback interface 
+
+		5. HWaddr b0:5a:da:d7:a4:8a --> this is hardware address or MAC address which is unique to each ethernet
+			card . therefore loopback interface doesnt have any MAC address . 
+
+	  	6. inet addr --> represent IPv4 address of the interface .  
+	  	   Bcast --> denotes the broadcast address 
+	  	   Mask --> Is the network mask 
+
+	  	7. UP , BROADCAST , RUNNING ,MULTICAST , LOOPBACK are flags 
+	  		UP --> this denotes that kernel modules related to network interface is loaded (it's enabled to 		   transmit and receive network packets) . 
+	  		BROADCAST -->Indicates that the interface is configured to handle broadcast packets . This is important for obtaining the IP address when hostname is given from DHCP server .
+	  		RUNNING -->Indicates that the network interface is operational and is ready to accept the data . 
+	  		MULTICAST -->interface is configured to handle multicast packets . 
+	  		LOOPBACK --> interface is a loopback interface 
+
+	  	8. MTU : Maximum Transmission Unit for which the interface is configured .MTU is a link layer charcteristic which provides limit on the size of the Ethernet frame . if datagram from IP layer are larger then MTU then they are breaked into small part to have size lower than MTU . In My PC it is set to 1500 bytes for wlo1 and eno1 . 
+	  	  Metric : it calculates the cost of transmitting data it help to decide when there are more than one interface to send packet to same location . The value of this property decides the priority of the device . if we have two Ethernet cards and we want to forcibly make your machine use one card over the other in sending the data. Then you can set the Metric value of the Ethernet card which you favor lower than that of the other Ethernet card
+
+	  	9. RX packets:24119 errors:0 dropped:0 overruns:0 frame:0 
+	  	   TX packets:983 errors:0 dropped:0 overruns:0 carrier:0
+	  	   RX packet --> number of recieved packet via interface . 
+	  	   TX packet --> number of transmitted packet via interface . 
+	  	   error --> number of damaged packets recieved . dropped is the number of packet dropped due to reception error 
+	  	   overruns --> number of received packets that experienced data overruns	
+	  	   frames --> number received packets that have frame errors.
+	  	   carrier --> packets that experience loss of carrier . 
+
+	  	10. collision --> The number of transmitted packets that experienced Ethernet collisions. A nonzero value of this field indicates possibility of network congestion.
+	  		txqueuelen	-->The field provides the information about the configured length of transmission queue.
+	  		RXByte --> total number of byte recieved over the interface .
+	  		TXByte --> total number of byte transmitted over the interface .
+
+	  	:: "route" COMMAND ::
+	  	Each Linux / UNIX / Windows or any computer that uses TCP/IP need to make routing decision. Routing table is used to control these decisions . Almost all computers and network devices connected to Internet use routing tables to compute the next hop for a packet
+
+	  	1. Flag G indicates path to route packets via a gateway
+	  	2. Destination : The destination network or destination host
+	  	3. Gateway : The gateway address or * if not set .
+	  	4. 
